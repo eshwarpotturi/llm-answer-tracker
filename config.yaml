@@ -1,0 +1,17 @@
+# Which models to ask, and which model judges the answers.
+# model_id values are OpenRouter model IDs (see openrouter.ai/models).
+models:
+  - label: ChatGPT
+    model_id: openai/REPLACE-ME
+  - label: Claude
+    model_id: anthropic/REPLACE-ME
+  - label: Gemini
+    model_id: google/REPLACE-ME
+  - label: Grok
+    model_id: x-ai/REPLACE-ME
+judge_model_id: provider/REPLACE-ME
+project: llm-answer-tracker
+questions_path: questions.csv
+data_dir: data/runs
+report_path: docs/index.html
+timeout_s: 120
