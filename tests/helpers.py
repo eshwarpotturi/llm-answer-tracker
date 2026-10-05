@@ -65,3 +65,21 @@ def order_of(html, labels):
             if f">{l}<" in r and l not in found:
                 found.append(l)
     return found
+
+
+def ranked_run(ranks_by_label, date="2026-10-05", errors=None, answer="answer text", question_id=None):
+    """Records for one run. ranks_by_label = {"Claude": [rank for q1, rank for q2, ...]}."""
+    errors = errors or {}
+    out = []
+    for label, ranks in ranks_by_label.items():
+        for i, rank in enumerate(ranks):
+            failed = label in errors
+            text = None if failed else answer
+            out.append(AnswerRecord(
+                run_date=date, question_id=question_id or f"q{i + 1}", model_label=label,
+                model_id=f"prov/{label.lower()}", answer=text, error=errors.get(label),
+                fetched_at=f"{date}T03:30:00Z", sha256=answer_hash(text) if text else None,
+                score=None if rank is None else float(100 - rank * 10), rank=rank,
+                rationale=None if rank is None else "because",
+            ))
+    return out
