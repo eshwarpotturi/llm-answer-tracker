@@ -41,6 +41,8 @@ summary { cursor:pointer; color:var(--accent); font-weight:600; font-size:14px; 
 .answer { white-space:pre-wrap; overflow-wrap:anywhere; margin:10px 0 6px; font-size:15px; }
 .meta { color:var(--muted); font-size:12px; margin:0 0 8px; overflow-wrap:anywhere; }
 .meta code { font-size:12px; }
+.banner { background:#fff1c2; color:#4a3600; border:1px solid #e0b93a; border-radius:10px;
+          padding:12px 16px; margin:0 0 20px; font-size:15px; }
 footer { color:var(--muted); font-size:13px; margin-top:28px; }
 footer li { margin-bottom:4px; }
 """
@@ -51,6 +53,13 @@ NOTES = [
     "A high rank means the answer was relevant, complete and in line with the supplied context. It is not proof that the answer is correct.",
     "The sha256 value is a fingerprint of the exact answer text stored for this run.",
 ]
+
+
+BANNER = (
+    '<p class="banner"><strong>Sample data.</strong> Nothing on this page came from a real model. '
+    "The answers are placeholders and the scores and ranks are invented, to show what the report "
+    "looks like. The first real run replaces this page.</p>"
+)
 
 
 def _change(previous: float | None, current: float | None, decimals: int) -> str:
@@ -134,7 +143,8 @@ def _question(question: Question, records: list[AnswerRecord],
 
 
 def build_report(questions: list[Question], current: list[AnswerRecord],
-                 previous: list[AnswerRecord] | None, generated_at: str) -> str:
+                 previous: list[AnswerRecord] | None, generated_at: str,
+                 sample: bool = False) -> str:
     wanted = {q.id for q in questions}
     current = [r for r in current if r.question_id in wanted]
     if previous is not None:
@@ -154,7 +164,7 @@ def build_report(questions: list[Question], current: list[AnswerRecord],
         f"<title>LLM Answer Tracker</title><style>{STYLE}</style></head><body><main>"
         f'<h1>LLM Answer Tracker</h1><p class="sub">Run of {escape(run_date)}{compared} · '
         f"generated {escape(generated_at)}</p>"
-        + _leaderboard(current, previous) + "".join(sections)
+        + (BANNER if sample else "") + _leaderboard(current, previous) + "".join(sections)
         + f"<footer><strong>How to read this page</strong><ul>{notes}</ul></footer></main></body></html>"
     )
 

@@ -47,6 +47,10 @@ run 2026-10-05: 3 questions, 4 models, 12 answers, 0 failed
 To see the "Change" column fill in, run again on a later day, or pretend with
 `python -m tracker run --date 2026-10-12`.
 
+To see what the report looks like before any real run, `python -m tracker sample`
+writes it with placeholder data. It calls no model, needs no token, and the page
+says clearly that the data is not real.
+
 ## What you can change
 
 ### The questions: `questions.csv`

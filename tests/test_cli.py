@@ -99,3 +99,26 @@ def test_summary_line(project, capsys):
 
 def test_invalid_date_argument_rejected(project):
     assert main(["run", "--config", project.config, "--date", "05-10-2026"]) == 2
+
+
+def test_sample_command_writes_labelled_report_without_token(project, monkeypatch):
+    monkeypatch.delenv("LLMFOUNDRY_TOKEN", raising=False)
+    assert main(["sample", "--config", project.config]) == 0
+    html = project.report.read_text(encoding="utf-8")
+    assert "Sample data" in html and "Sample placeholder" in html
+    assert html.count("<details") == 3 * 4
+    assert "new" not in section(html, "question-q1")      # two sample weeks, so changes show
+
+
+def test_sample_data_never_mixes_with_real_runs(project):
+    main(["sample", "--config", project.config])
+    assert load_runs_dates(project) == []
+    run(project.config, "2026-10-05", ask=fake_ask)
+    html = project.report.read_text(encoding="utf-8")
+    assert "Sample data" not in html
+    assert section(html, "question-q1").count("new") == 4  # sample weeks are not a "previous run"
+
+
+def load_runs_dates(project):
+    from tracker.store import list_run_dates
+    return list_run_dates(project.data_dir)

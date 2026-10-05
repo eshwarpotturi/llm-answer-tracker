@@ -70,3 +70,9 @@ def test_title_and_run_date_shown():
 def test_write_report_creates_directories(tmp_path):
     write_report("<html></html>", str(tmp_path / "docs" / "index.html"))
     assert (tmp_path / "docs" / "index.html").read_text(encoding="utf-8") == "<html></html>"
+
+
+def test_sample_banner_only_when_asked():
+    cur = ranked_run({"Claude": [1], "Grok": [2]})
+    assert "Sample data" not in build_report(QS1, cur, None, "T")
+    assert "Sample data" in build_report(QS1, cur, None, "T", sample=True)
