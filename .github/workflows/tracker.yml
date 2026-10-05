@@ -1,0 +1,44 @@
+name: LLM answer tracker
+
+on:
+  schedule:
+    # Minute Hour Day-of-month Month Day-of-week, in UTC.
+    # Mondays 03:30 UTC = Mondays 09:00 IST. See README for other intervals.
+    - cron: "30 3 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency: tracker
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install
+        run: pip install .
+
+      - name: Ask the models and build the report
+        env:
+          LLMFOUNDRY_TOKEN: ${{ secrets.LLMFOUNDRY_TOKEN }}
+        run: python -m tracker run
+
+      - name: Save the results
+        if: always()
+        run: |
+          git config user.name "llm-answer-tracker"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/runs docs
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+          else
+            git commit -m "run: $(date -u +%F)"
+            git push
+          fi
