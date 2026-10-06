@@ -6,3 +6,4 @@ __pycache__/
 seeds/
 seed.config.json
 .seed-token
+.seed-user
