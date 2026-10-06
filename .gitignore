@@ -4,3 +4,5 @@ __pycache__/
 .env
 .superpowers/
 seeds/
+seed.config.json
+.seed-token
