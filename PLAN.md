@@ -4,7 +4,7 @@
 
 **Goal:** On a schedule (weekly by default), ask every question in a CSV file to a configurable set of LLMs, keep a dated record of each answer, rank the answers per question, and publish a report.
 
-**Architecture:** A small Python package run by a scheduled GitHub Actions workflow. All models are reached through Straive's LLM Foundry gateway, using its OpenRouter route, so one token and one request format cover every model and adding or swapping a model is a one-line config change. Each run writes one dated JSONL file (the permanent record, with a SHA-256 hash per answer) and regenerates a static HTML report served from GitHub Pages.
+**Architecture:** A small Python package run by a scheduled GitHub Actions workflow. All models are reached through the LLM Foundry gateway, using its OpenRouter route, so one token and one request format cover every model and adding or swapping a model is a one-line config change. Each run writes one dated JSONL file (the permanent record, with a SHA-256 hash per answer) and regenerates a static HTML report served from GitHub Pages.
 
 **Tech Stack:** Python 3.11+, httpx, PyYAML, pytest, GitHub Actions, GitHub Pages. No database, no web framework.
 
