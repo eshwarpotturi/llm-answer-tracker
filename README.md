@@ -4,7 +4,7 @@ Asks every question in `questions.csv` to a set of LLMs, keeps a dated copy of
 each answer, ranks the answers for each question, and writes a report page.
 It can run by hand or on a schedule (weekly by default).
 
-All models are called through Straive's LLM Foundry, so one Foundry token covers
+All models are called through the LLM Foundry, so one Foundry token covers
 every model.
 
 ## Run it on your laptop
@@ -65,7 +65,7 @@ Keep the `id` of a question the same from week to week, so the report can show
 how each model's rank changed. Saving the file from Excel as "CSV UTF-8" works.
 
 Only put public, non-confidential questions here. This route sends the questions
-to providers outside Straive's tenant.
+to providers outside the organisation's tenant.
 
 ### The models: `config.yaml`
 
