@@ -1,4 +1,4 @@
-"""Send one prompt to one model through Straive's LLM Foundry (OpenRouter route)."""
+"""Send one prompt to one model through the LLM Foundry (OpenRouter route)."""
 from __future__ import annotations
 
 import time
